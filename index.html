@@ -432,7 +432,7 @@
         }
 
         .contact-content {
-            max-width: 600px;
+            max-width: 900px;
             margin: 0 auto;
         }
 
@@ -477,6 +477,85 @@
             color: var(--primary-bg);
             transform: translateY(-5px);
             box-shadow: var(--shadow-light);
+        }
+
+        /* Bio & Skills Styles */
+        .bio-text {
+            text-align: left;
+            margin-bottom: 3rem;
+            color: var(--text-secondary);
+            font-size: 1.05rem;
+            line-height: 1.8;
+        }
+
+        .bio-text p {
+            margin-bottom: 1.5rem;
+        }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            text-align: left;
+            margin-bottom: 3rem;
+        }
+
+        .skill-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            padding: 1.5rem;
+            border-radius: 1rem;
+            transition: all 0.3s ease;
+            height: 100%;
+        }
+
+        .skill-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent-color);
+            box-shadow: var(--shadow-light);
+        }
+
+        .skill-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .skill-icon {
+            width: 48px;
+            height: 48px;
+            min-width: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 212, 255, 0.1);
+            color: var(--accent-color);
+            border-radius: 0.75rem;
+            font-size: 1.4rem;
+        }
+
+        .skill-title {
+            font-weight: 700;
+            color: var(--text-primary);
+            font-size: 1rem;
+            line-height: 1.4;
+        }
+
+        .skill-desc {
+            font-size: 0.95rem;
+            color: #e0e0e0;
+            line-height: 1.6;
+        }
+
+        .cta-container {
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.03);
+            padding: 2rem;
+            border-radius: 1rem;
+            border: 1px solid var(--border-color);
         }
 
         /* Footer */
@@ -1017,46 +1096,67 @@
         <div class="container">
             <div class="contact-content">
                 <h2 class="contact-title">Vamos desenvolver juntos?</h2>
-                <div class="contact-text" style="text-align: left; font-size: 1rem;">
-                    <p style="margin-bottom: 1rem;">
+                <div class="bio-text">
+                    <p>
                         Sou um desenvolvedor apaixonado pela convergência entre o mundo físico e o digital. Com sólida
                         formação em Mecatrônica, foco na criação de sistemas que exigem alta precisão, automação e
                         inteligência de dados.
                     </p>
-
-                    <p style="margin-bottom: 2rem;">
+                    <p>
                         Minha abordagem une a visão analítica da engenharia com a agilidade do desenvolvimento de
                         software moderno. Ajudo empresas a otimizarem processos e pessoas a transformarem ideias
                         complexas em protótipos funcionais e produtos escaláveis.
                     </p>
+                </div>
 
-                    <ul style="list-style: none; padding: 0; margin-bottom: 2rem;">
-                        <li style="margin-bottom: 0.8rem;">
-                            <strong style="color: var(--text-primary);">Sistemas Embarcados & IoT:</strong>
+                <div class="skills-grid">
+                    <div class="skill-card">
+                        <div class="skill-header">
+                            <div class="skill-icon"><i class="fas fa-microchip"></i></div>
+                            <div class="skill-title">Sistemas Embarcados & IoT</div>
+                        </div>
+                        <div class="skill-desc">
                             Desenvolvimento de firmware, integração de sensores e comunicação sem fio (Arduino, ESP32,
                             Raspberry Pi).
-                        </li>
-                        <li style="margin-bottom: 0.8rem;">
-                            <strong style="color: var(--text-primary);">Automação e Controle:</strong>
-                            Programação de lógica para processos industriais e robóticos.
-                        </li>
-                        <li style="margin-bottom: 0.8rem;">
-                            <strong style="color: var(--text-primary);">Desenvolvimento de Software:</strong>
-                            Criação de interfaces, integração de APIs e ferramentas de suporte ao hardware.
-                        </li>
-                        <li style="margin-bottom: 0.8rem;">
-                            <strong style="color: var(--text-primary);">Prototipagem Rápida:</strong>
-                            Modelagem e desenvolvimento de MVPs (Minimum Viable Products).
-                        </li>
-                    </ul>
+                        </div>
+                    </div>
 
-                    <p style="text-align: center; font-weight: 500; color: var(--text-primary);">
+                    <div class="skill-card">
+                        <div class="skill-header">
+                            <div class="skill-icon"><i class="fas fa-robot"></i></div>
+                            <div class="skill-title">Automação e Controle</div>
+                        </div>
+                        <div class="skill-desc">
+                            Programação de lógica para processos industriais e robóticos.
+                        </div>
+                    </div>
+
+                    <div class="skill-card">
+                        <div class="skill-header">
+                            <div class="skill-icon"><i class="fas fa-code"></i></div>
+                            <div class="skill-title">Desenvolvimento de Software</div>
+                        </div>
+                        <div class="skill-desc">
+                            Criação de interfaces, integração de APIs e ferramentas de suporte ao hardware.
+                        </div>
+                    </div>
+
+                    <div class="skill-card">
+                        <div class="skill-header">
+                            <div class="skill-icon"><i class="fas fa-cubes"></i></div>
+                            <div class="skill-title">Prototipagem Rápida</div>
+                        </div>
+                        <div class="skill-desc">
+                            Modelagem e desenvolvimento de MVPs (Minimum Viable Products).
+                        </div>
+                    </div>
+                </div>
+
+                <div class="cta-container">
+                    <p style="margin-bottom: 2rem; color: var(--text-primary); font-size: 1.1rem; font-weight: 500;">
                         Tem um desafio técnico ou um projeto em mente? Vamos conversar sobre como posso aplicar minha
                         experiência para tirar sua ideia do papel.
                     </p>
-                </div>
-
-                <div class="social-links" style="display: flex; justify-content: center; margin-top: 2rem;">
                     <a href="https://wa.me/5522999094530" target="_blank" class="contact-link"
                         title="Falar no WhatsApp">
                         <i class="fab fa-whatsapp"></i>
