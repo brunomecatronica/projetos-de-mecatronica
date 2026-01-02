@@ -1,0 +1,1439 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Programação & Mecatrônica - Bruno Oliveira</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-bg: #0a0a0a;
+            --secondary-bg: #111111;
+            --card-bg: #1a1a1a;
+            --accent-color: #00d4ff;
+            --text-primary: #ffffff;
+            --text-secondary: #ffffff;
+            --text-muted: #666666;
+            --border-color: #2a2a2a;
+            --gradient-primary: linear-gradient(135deg, #00d4ff 0%, #0099cc 100%);
+            --shadow-light: 0 4px 20px rgba(0, 212, 255, 0.1);
+            --shadow-heavy: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            line-height: 1.6;
+            color: var(--text-primary);
+            background-color: var(--primary-bg);
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+            /* Otimizações para rotação de tela */
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            -webkit-perspective: 1000;
+            perspective: 1000;
+            transform: translateZ(0);
+        }
+
+        /* Classe para rotação de tela */
+        body.rotating {
+            transition: none !important;
+        }
+
+        body.rotating * {
+            transition: none !important;
+        }
+
+        /* Header */
+        .header {
+            background: var(--primary-bg);
+            border-bottom: 1px solid var(--border-color);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+        }
+
+        .contact-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            background: var(--gradient-primary);
+            color: var(--primary-bg);
+            text-decoration: none;
+            border-radius: 2rem;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+        }
+
+        .contact-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 212, 255, 0.3);
+        }
+
+        .contact-link i {
+            font-size: 1.1rem;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .nav-link {
+            color: var(--text-secondary);
+            text-decoration: none;
+            padding: 0.4rem 0.6rem;
+            border-radius: 0.5rem;
+            transition: background 0.2s ease, color 0.2s ease;
+            font-weight: 500;
+        }
+
+        .nav-link:hover {
+            background: rgba(255, 255, 255, 0.06);
+            color: var(--text-primary);
+        }
+
+        .nav-link.active {
+            color: var(--accent-color);
+        }
+
+        .nav-toggle {
+            display: none;
+            width: 44px;
+            height: 44px;
+            align-items: center;
+            justify-content: center;
+            background: transparent;
+            border: 1px solid var(--border-color);
+            border-radius: 0.5rem;
+            color: var(--text-primary);
+            cursor: pointer;
+        }
+
+        .nav-toggle i {
+            font-size: 1.2rem;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 60vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: radial-gradient(circle at 20% 50%, rgba(0, 212, 255, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(0, 153, 204, 0.05) 0%, transparent 50%),
+                var(--primary-bg);
+            position: relative;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            z-index: 2;
+        }
+
+        .hero h1 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -0.02em;
+        }
+
+        .hero-subtitle {
+            font-size: clamp(1.2rem, 3vw, 1.8rem);
+            font-weight: 300;
+            margin-bottom: 2rem;
+            color: var(--text-secondary);
+            letter-spacing: 0.5px;
+        }
+
+
+        .hero-description {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto 3rem;
+            line-height: 1.8;
+        }
+
+        /* Container Global */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .section {
+            padding: 8rem 0;
+        }
+
+        .section-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 5rem;
+            color: var(--text-primary);
+            letter-spacing: -0.02em;
+        }
+
+        /* Projects Section */
+        .projects-section {
+            background: var(--primary-bg);
+        }
+
+        .projects-grid {
+            display: grid;
+            gap: 4rem;
+        }
+
+        .project-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 1.5rem;
+            overflow: hidden;
+            transition: all 0.4s ease;
+            position: relative;
+            /* Otimizações para performance */
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            -webkit-transform: translateZ(0);
+            transform: translateZ(0);
+            will-change: transform;
+        }
+
+        .project-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-heavy);
+            border-color: var(--accent-color);
+        }
+
+        .project-image-container {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .project-image {
+            width: 100%;
+            height: 350px;
+            object-fit: cover;
+            object-position: center;
+            transition: transform 0.4s ease;
+            /* Otimizações para performance */
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            -webkit-transform: translateZ(0);
+            transform: translateZ(0);
+            will-change: transform;
+            /* Garantir preenchimento completo */
+            min-height: 350px;
+            max-height: 350px;
+            display: block;
+        }
+
+        .project-card:hover .project-image {
+            transform: scale(1.05);
+        }
+
+        /* ========================================
+           SISTEMA PADRÃO DE GALERIA DE IMAGENS
+           Grid 4x2 (4 colunas, máximo 2 linhas)
+           ======================================== */
+
+        .multi-image-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-auto-rows: 250px;
+            gap: 0.75rem;
+            padding: 1rem;
+            background: var(--secondary-bg);
+        }
+
+        /* Todas as imagens do grid */
+        .multi-image-grid img {
+            width: 100%;
+            height: 250px;
+            min-height: 250px;
+            max-height: 250px;
+            object-fit: cover;
+            object-position: center;
+            border-radius: 0.5rem;
+            /* Otimizações para performance */
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            -webkit-transform: translateZ(0);
+            transform: translateZ(0);
+            will-change: transform;
+        }
+
+        /* Todas as imagens são clicáveis para galeria */
+        .multi-image-grid img {
+            cursor: pointer;
+            position: relative;
+            transition: transform 0.3s ease;
+        }
+
+        /* Indicador visual de galeria em todas as imagens */
+        .multi-image-grid img::after {
+            content: '🖼️';
+            position: absolute;
+            bottom: 8px;
+            right: 8px;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 0.3rem 0.5rem;
+            border-radius: 0.3rem;
+            font-size: 0.8rem;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+        }
+
+        .multi-image-grid img:hover::after {
+            opacity: 1;
+        }
+
+        /* Efeito hover em todas as imagens */
+        .multi-image-grid img:hover {
+            transform: scale(1.02);
+        }
+
+
+        .project-content {
+            padding: 2rem;
+        }
+
+        .project-category {
+            display: inline-block;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.8rem;
+            margin-bottom: 1rem;
+        }
+
+        .project-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.6rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .project-description {
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            line-height: 1.7;
+        }
+
+        .project-challenge {
+            background: var(--secondary-bg);
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            border-left: 3px solid var(--accent-color);
+            margin: 1.5rem 0;
+        }
+
+        .project-challenge h4 {
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .project-challenge p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .project-links {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .project-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            background: var(--gradient-primary);
+            color: var(--primary-bg);
+            text-decoration: none;
+            border-radius: 2rem;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .project-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 212, 255, 0.3);
+        }
+
+        /* Contact Section */
+        .contact-section {
+            background: linear-gradient(135deg, var(--secondary-bg) 0%, var(--primary-bg) 100%);
+            text-align: center;
+        }
+
+        .contact-content {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .contact-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(2rem, 4vw, 3rem);
+            margin-bottom: 2rem;
+            color: var(--text-primary);
+        }
+
+        .contact-text {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            margin-bottom: 3rem;
+            line-height: 1.8;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-top: 3rem;
+        }
+
+        .social-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 60px;
+            height: 60px;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            text-decoration: none;
+            border-radius: 50%;
+            font-size: 1.3rem;
+            transition: all 0.3s ease;
+        }
+
+        .social-link:hover {
+            background: var(--gradient-primary);
+            color: var(--primary-bg);
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-light);
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--primary-bg);
+            border-top: 1px solid var(--border-color);
+            text-align: center;
+            padding: 3rem 2rem;
+        }
+
+        .footer p {
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+        }
+
+        /* Modal de Galeria */
+        .gallery-modal {
+            display: none;
+            position: fixed;
+            z-index: 999999;
+            left: 0;
+            top: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            overflow: auto;
+            visibility: hidden;
+            opacity: 0;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .gallery-modal.active {
+            display: flex !important;
+            visibility: visible !important;
+            opacity: 1 !important;
+            z-index: 999999 !important;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .gallery-content {
+            position: relative;
+            max-width: 90vw;
+            max-height: 90vh;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            box-sizing: border-box;
+            margin: 0 auto;
+        }
+
+        .gallery-main-image {
+            max-width: 100%;
+            max-height: 60vh;
+            width: auto;
+            height: auto;
+            object-fit: contain;
+            border-radius: 0.5rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            margin-bottom: 1rem;
+        }
+
+        /* Thumbnails removidos - navegação apenas por setas */
+
+        .gallery-close {
+            position: absolute;
+            top: -40px;
+            right: 0;
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .gallery-close:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .gallery-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+            background: rgba(0, 0, 0, 0.8);
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            z-index: 10;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .gallery-nav:hover {
+            background: rgba(0, 212, 255, 0.9);
+            transform: translateY(-50%) scale(1.1);
+            box-shadow: 0 6px 20px rgba(0, 212, 255, 0.4);
+        }
+
+        .gallery-prev {
+            left: 30px;
+        }
+
+        .gallery-next {
+            right: 30px;
+        }
+
+        .mobile-gallery-trigger {
+            cursor: pointer;
+            position: relative;
+        }
+
+        .mobile-gallery-trigger::after {
+            content: 'Ver Galeria';
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
+            font-size: 0.8rem;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .mobile-gallery-trigger:hover::after {
+            opacity: 1;
+        }
+
+        /* Responsividade */
+        @media (max-width: 768px) {
+            .section {
+                padding: 4rem 0;
+            }
+
+            .container {
+                padding: 0 1rem;
+            }
+
+            .hero {
+                padding: 1rem;
+            }
+
+            .nav-toggle {
+                display: inline-flex;
+            }
+
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 64px;
+                left: 0;
+                right: 0;
+                padding: 0.75rem;
+            }
+
+            .mobile-menu {
+                display: grid;
+                gap: 0.5rem;
+                background: rgba(17, 17, 17, 0.98);
+                border-top: 1px solid var(--border-color);
+                border-bottom: 1px solid var(--border-color);
+                padding: 0.75rem;
+            }
+
+            .header.open .nav-links {
+                display: block;
+            }
+
+            .projects-grid {
+                gap: 2.5rem;
+            }
+
+            .project-content {
+                padding: 1.5rem;
+            }
+
+            /* ========================================
+               MOBILE: APENAS PRIMEIRA IMAGEM
+               Todas as outras ficam escondidas
+               ======================================== */
+
+            .multi-image-grid {
+                grid-template-columns: 1fr !important;
+                grid-template-rows: auto !important;
+                gap: 0 !important;
+                padding: 0 !important;
+            }
+
+            /* Primeira imagem - única visível no mobile */
+            .multi-image-grid img:first-child {
+                height: 300px !important;
+                min-height: 300px !important;
+                max-height: 300px !important;
+                border-radius: 0 !important;
+                cursor: pointer;
+            }
+
+            /* Esconder todas as outras imagens no mobile */
+            .multi-image-grid img:not(:first-child) {
+                display: none !important;
+            }
+
+            /* Manter indicador visual no mobile */
+            .multi-image-grid img::after {
+                opacity: 1 !important;
+                font-size: 1rem;
+                padding: 0.5rem;
+            }
+
+            .project-links {
+                gap: 0.75rem;
+            }
+
+            .social-links {
+                gap: 1rem;
+            }
+
+            /* Ajustar setas de navegação para mobile */
+            .gallery-content {
+                padding: 1rem;
+                max-width: 85vw;
+            }
+
+            .gallery-main-image {
+                max-height: 50vh;
+                margin: 0 60px;
+            }
+
+            .gallery-nav {
+                width: 45px;
+                height: 45px;
+                font-size: 1.3rem;
+                top: 50%;
+                transform: translateY(-50%);
+            }
+
+            .gallery-prev {
+                left: 5px;
+            }
+
+            .gallery-next {
+                right: 5px;
+            }
+
+            .gallery-close {
+                top: 10px;
+                right: 10px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="header">
+        <nav class="nav" aria-label="Navegação principal">
+            <a href="https://wa.me/5522999094530" target="_blank" class="contact-link" title="Contato via WhatsApp">
+                <i class="fab fa-whatsapp"></i>
+                Contato
+            </a>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Projetos Bruno Oliveira</h1>
+            <p class="hero-subtitle">Desenvolvimento web, aplicações e sistemas automatizados</p>
+            <p class="hero-description">
+                Criação de soluções tecnológicas inovadoras que conectam o mundo digital com o físico,
+                desenvolvendo aplicações web, sistemas IoT e automação residencial.
+                Formado como Técnico em Mecatrônica pelo SENAI (2020) com CFT ativo.
+            </p>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section class="section projects-section">
+        <div class="container">
+            <h2 class="section-title">Projetos de Programação & Mecatrônica</h2>
+
+            <div class="projects-grid">
+                <!-- PlugAlerta - Monitor Inteligente de Energia -->
+                <div class="project-card fade-in">
+                    <div class="multi-image-grid" data-gallery="plugalerta">
+                        <img src="images/plugalerta_landing/plug1.png"
+                            alt="PlugAlerta - Monitor Inteligente de Energia">
+                        <img src="images/plugalerta_landing/plug2.png"
+                            alt="PlugAlerta - Sistema ESP32 e Sensor ZMPT101B">
+                        <img src="images/plugalerta_landing/plug3.png" alt="PlugAlerta - Aplicativo Flutter">
+                        <img src="images/plugalerta_landing/plug4.png" alt="PlugAlerta - Dashboard e Analytics">
+                    </div>
+                    <div class="project-content">
+                        <div class="project-category">IoT & Monitoramento</div>
+                        <h3 class="project-title">PlugAlerta - Monitor Inteligente de Energia</h3>
+                        <p class="project-description">
+                            Sistema de monitoramento inteligente de energia que detecta quedas e restaurações de energia
+                            AC instantaneamente
+                            através do sensor ZMPT101B no ESP32. Comunicação dupla: MQTT para dados em tempo real e HTTP
+                            para notificações
+                            push garantidas via Firebase Cloud Messaging. Backend Django hospedado no Render com
+                            arquitetura escalável,
+                            vinculação de dispositivos por QR Code, histórico e analytics no Firestore. Projeto com
+                            qualidade enterprise
+                            (nota 10/10) com testes automatizados, cache, rate limiting e documentação completa.
+                        </p>
+                        <div class="project-challenge">
+                            <h4>Desafio</h4>
+                            <p>Desenvolver um sistema IoT robusto que integrasse detecção de energia em tempo real
+                                (ESP32 + ZMPT101B),
+                                comunicação dupla (MQTT para dados + HTTP para notificações), backend Django escalável
+                                no Render, notificações
+                                push via Firebase mesmo com app fechado, vinculação por QR Code, e arquitetura
+                                enterprise com segurança,
+                                performance otimizada e documentação completa. O desafio principal era garantir
+                                notificações instantâneas e
+                                confiáveis mesmo em condições de queda de energia, mantendo baixo custo operacional
+                                (~US$ 0-10/mês).</p>
+                        </div>
+                        <div class="project-links" style="margin-top: 1rem; display: flex; gap: 1rem; flex-wrap: wrap;">
+                            <a href="https://brunomecatronica.github.io/plugalertasite/" target="_blank"
+                                class="project-link" rel="noopener noreferrer">
+                                <i class="fas fa-external-link-alt"></i>
+                                Ver Site
+                            </a>
+                            <a href="https://plugalerta-beckend.onrender.com/admin/" target="_blank"
+                                class="project-link" rel="noopener noreferrer">
+                                <i class="fas fa-chart-line"></i>
+                                Dashboard
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Snuggle App -->
+                <div class="project-card fade-in">
+                    <div class="multi-image-grid" data-gallery="snuggle">
+                        <img src="images/snuggle-app/sunggle1.jpg" alt="Snuggle App - Interface Principal">
+                        <img src="images/snuggle-app/sunggle2.jpeg" alt="Snuggle App - Funcionalidades">
+                        <img src="images/snuggle-app/sunggle3.jpeg" alt="Snuggle App - Design">
+                        <img src="images/snuggle-app/sunggle4.jpeg" alt="Snuggle App - UX">
+                        <img src="images/snuggle-app/sunggle5.jpeg" alt="Snuggle App - Interface">
+                        <img src="images/snuggle-app/sunggle6.jpeg" alt="Snuggle App - Recursos">
+                        <img src="images/snuggle-app/sunggle7.jpeg" alt="Snuggle App - Navegação">
+                        <img src="images/snuggle-app/sunggle8.jpeg" alt="Snuggle App - Finalização">
+                    </div>
+                    <div class="project-content">
+                        <div class="project-category">Desenvolvimento Mobile & UX/UI</div>
+                        <h3 class="project-title">Snuggle - Birthday Manager</h3>
+                        <p class="project-description">
+                            Aplicativo Flutter para gerenciamento de aniversários e datas importantes. Notificações
+                            inteligentes personalizáveis,
+                            sincronização automática com Firebase, suporte multilíngue (8 idiomas), integração com
+                            contatos e compartilhamento
+                            via WhatsApp. Funciona offline e sincroniza automaticamente quando online.
+                        </p>
+                        <div class="project-challenge">
+                            <h4>Desafio</h4>
+                            <p>Desenvolver um aplicativo multiplataforma que combinasse notificações inteligentes,
+                                sincronização em nuvem,
+                                suporte multilíngue e integração com contatos, mantendo interface intuitiva e
+                                funcionamento offline confiável.</p>
+                        </div>
+                        <div style="text-align: center; margin: 1rem 0;">
+                            <a href="https://brunomecatronica.github.io/snuggle-links-app/index.html" target="_blank"
+                                style="color: #00d4ff; text-decoration: none; font-weight: 500; font-size: 0.9rem;">
+                                <i class="fas fa-external-link-alt" style="margin-right: 0.5rem;"></i>
+                                Ver Documentação Completa
+                            </a>
+                        </div>
+                        <div class="project-links">
+                            <a href="https://play.google.com/store/apps/details?id=com.brunomecatronica.snuggle&pcampaignid=web_share"
+                                class="project-link" target="_blank" rel="noopener noreferrer">
+                                <i class="fab fa-google-play"></i>
+                                Google Play
+                            </a>
+                            <a href="snuggle-app-store-em-breve.html" class="project-link" target="_blank"
+                                rel="noopener noreferrer">
+                                <i class="fab fa-apple"></i>
+                                App Store
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Projeto de Sensoriamento de Leira de Compostagem -->
+                <div class="project-card fade-in">
+                    <div class="multi-image-grid" data-gallery="leira">
+                        <img src="images/projeto-leira-uerj/leira-1-20240328_141041.jpg"
+                            alt="Sensoriamento de Leira de Compostagem - Visão Geral">
+                        <img src="images/projeto-leira-uerj/leira-2-IMG-20220423-WA0014.jpg"
+                            alt="Sensoriamento de Leira - Sistema Arduino e Sensores">
+                        <img src="images/projeto-leira-uerj/leira-3-20240426_142716.jpg"
+                            alt="Sensoriamento de Leira - Implementação em Campo">
+                        <img src="images/projeto-leira-uerj/leira-4-20240316_122711.jpg"
+                            alt="Sensoriamento de Leira - Módulo de Conexão Web">
+                        <img src="images/projeto-leira-uerj/leira-5-20220327_142119.jpg"
+                            alt="Sensoriamento de Leira - Monitoramento de Dados">
+                    </div>
+                    <div class="project-content">
+                        <div class="project-category">IoT & Sensoriamento</div>
+                        <h3 class="project-title">Projeto de Sensoriamento de Leira de Compostagem</h3>
+                        <p class="project-description">
+                            Sistema de monitoramento baseado em Arduino com módulo de conexão web para medir temperatura
+                            e umidade do solo
+                            em leiras de compostagem. Os dados coletados são enviados via MQTT para um backend que
+                            realiza o tratamento
+                            e análise dos dados, permitindo monitoramento em tempo real das condições de compostagem e
+                            otimização do processo
+                            de decomposição orgânica.
+                        </p>
+                        <div class="project-challenge">
+                            <h4>Desafio</h4>
+                            <p>Desenvolver um sistema de sensoriamento robusto que integrasse Arduino com módulo de
+                                conexão web, comunicação
+                                MQTT para transmissão de dados, e backend para processamento e análise. O desafio
+                                principal era garantir medições
+                                precisas de temperatura e umidade do solo em condições de campo, com transmissão
+                                confiável dos dados e processamento
+                                eficiente no backend para suportar decisões baseadas em dados no processo de
+                                compostagem.</p>
+                        </div>
+                        <div style="text-align: center; margin: 1rem 0;">
+                            <a href="images/projeto-leira-uerj/Manutenção sistema sensoriamento de leira FAPERJ 2020.pptx"
+                                target="_blank"
+                                style="color: #00d4ff; text-decoration: none; font-weight: 500; font-size: 0.9rem;">
+                                <i class="fas fa-file-powerpoint" style="margin-right: 0.5rem;"></i>
+                                Documentação Manutenção
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cortina Automatizada -->
+                <div class="project-card fade-in">
+                    <div class="multi-image-grid" data-gallery="cortina">
+                        <img src="images/desenvolvimento-cortina-automatizada/veled1.png"
+                            alt="Cortina Automatizada - Sistema Principal">
+                        <img src="images/desenvolvimento-cortina-automatizada/valed2.png"
+                            alt="Cortina Automatizada - Detalhes">
+                        <img src="images/desenvolvimento-cortina-automatizada/veled%203.png"
+                            alt="Cortina Automatizada - Componentes">
+                        <img src="images/desenvolvimento-cortina-automatizada/veled4.png"
+                            alt="Cortina Automatizada - Implementação">
+                        <img src="images/desenvolvimento-cortina-automatizada/veled5.jpg"
+                            alt="Cortina Automatizada - Sistema">
+                        <img src="images/desenvolvimento-cortina-automatizada/veled6.png"
+                            alt="Cortina Automatizada - Aplicação">
+                    </div>
+                    <div class="project-content">
+                        <div class="project-category">Mecatrônica & Automação</div>
+                        <h3 class="project-title">Sistema de Cortina Automatizada</h3>
+                        <p class="project-description">
+                            Desenvolvimento de sistema mecatrônico para automação de cortinas residenciais,
+                            integrando sensores, atuadores e controle inteligente para conforto e eficiência energética.
+                        </p>
+                        <div class="project-challenge">
+                            <h4>Desafio</h4>
+                            <p>Criar um sistema robusto e confiável que funcionasse em diferentes condições ambientais,
+                                com interface de usuário intuitiva e integração com sistemas de automação residencial.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Regui - Vaso para plantas com sistema inteligente de irrigação automática com Monitoramento em Tempo Real -->
+                <div class="project-card fade-in">
+                    <div class="multi-image-grid" data-gallery="vaso">
+                        <img src="images/vaso-automatizado/regui3.png"
+                            alt="Regui - Sistema completo de irrigação inteligente">
+                        <img src="images/vaso-automatizado/regui1.png"
+                            alt="Regui - Sensores de umidade do solo e reservatório">
+                        <img src="images/vaso-automatizado/regui2.png"
+                            alt="Regui - Aplicativo Flutter para monitoramento remoto">
+                        <img src="images/vaso-automatizado/regui4.png"
+                            alt="Regui - ESP32 com FreeRTOS e componentes do sistema">
+                        <img src="images/vaso-automatizado/regui5.png" alt="Regui - Detalhes do hardware e sensores">
+                        <img src="images/vaso-automatizado/regui7.png" alt="Regui - Bomba de água em modo pulsado">
+                        <img src="images/vaso-automatizado/regui8.png"
+                            alt="Regui - Sistema completo com display LCD e LEDs">
+                        <img src="images/vaso-automatizado/regui9.png" alt="Regui - Aplicação prática do sistema">
+                    </div>
+                    <div class="project-content">
+                        <div class="project-category">IoT & Automação Residencial</div>
+                        <h3 class="project-title">Regui - Vaso para plantas com sistema inteligente de irrigação
+                            automática com Monitoramento em Tempo Real</h3>
+                        <p class="project-description">
+                            Vaso inteligente para plantas que monitora a umidade do solo continuamente e aciona a bomba
+                            automaticamente quando necessário.
+                            Sistema totalmente autônomo que funciona 100% offline, com aplicativo Flutter para
+                            monitoramento remoto em tempo real
+                            via MQTT. Inclui proteções de segurança, FreeRTOS para multi-tarefa real-time (11 tasks
+                            paralelas) e modo pulsado
+                            da bomba para prolongar vida útil.
+                        </p>
+                        <div class="project-challenge">
+                            <h4>Desafio</h4>
+                            <p>Desenvolver um sistema IoT robusto integrando FreeRTOS (11 tasks paralelas), comunicação
+                                MQTT não-bloqueante,
+                                funcionamento 100% offline autônomo, controle thread-safe com mutexes, e aplicativo
+                                Flutter com sincronização
+                                bidirecional. O desafio principal era garantir irrigação automática sempre ativa, mesmo
+                                sem conexão, enquanto
+                                oferecia monitoramento remoto opcional quando conectado.</p>
+                        </div>
+                        <div class="project-links" style="margin-top: 1rem; display: flex; gap: 1rem; flex-wrap: wrap;">
+                            <a href="https://brunomecatronica.github.io/regui_site/" target="_blank"
+                                class="project-link" rel="noopener noreferrer">
+                                <i class="fas fa-external-link-alt"></i>
+                                Ver Site Completo
+                            </a>
+                            <a href="#" class="project-link">
+                                <i class="fas fa-play"></i>
+                                Ver Demo
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="section contact-section">
+        <div class="container">
+            <div class="contact-content">
+                <h2 class="contact-title">Vamos Criar Juntos?</h2>
+                <p class="contact-text">
+                    Estou sempre aberto a novos desafios e colaborações criativas.
+                    Se você tem um projeto de programação ou mecatrônica em mente ou quer explorar possibilidades,
+                    vamos conversar sobre como podemos transformar suas ideias em realidade.
+                </p>
+
+                <div class="social-links">
+                    <a href="https://wa.me/5522999094530" target="_blank" class="social-link" title="WhatsApp">
+                        <i class="fab fa-whatsapp"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 Bruno Oliveira. Todos os direitos reservados.</p>
+            <p>Um criador inquieto e versátil, criando o futuro através da arte e tecnologia.</p>
+        </div>
+    </footer>
+
+    <!-- Modais de Galeria -->
+    <!-- Galeria Leira -->
+    <div id="gallery-leira" class="gallery-modal">
+        <div class="gallery-content">
+            <div class="gallery-close">&times;</div>
+            <div class="gallery-nav gallery-prev">&lt;</div>
+            <div class="gallery-nav gallery-next">&gt;</div>
+            <img src="images/projeto-leira-uerj/leira-1-20240328_141041.jpg"
+                alt="Sensoriamento de Leira de Compostagem - Visão Geral" class="gallery-main-image">
+        </div>
+    </div>
+
+    <!-- Galeria Cortina -->
+    <div id="gallery-cortina" class="gallery-modal">
+        <div class="gallery-content">
+            <div class="gallery-close">&times;</div>
+            <div class="gallery-nav gallery-prev">&lt;</div>
+            <div class="gallery-nav gallery-next">&gt;</div>
+            <img src="images/desenvolvimento-cortina-automatizada/veled1.png"
+                alt="Cortina Automatizada - Sistema Principal" class="gallery-main-image">
+        </div>
+    </div>
+
+    <!-- Galeria Vaso -->
+    <div id="gallery-vaso" class="gallery-modal">
+        <div class="gallery-content">
+            <div class="gallery-close">&times;</div>
+            <div class="gallery-nav gallery-prev">&lt;</div>
+            <div class="gallery-nav gallery-next">&gt;</div>
+            <img src="images/vaso-automatizado/regui3.png" alt="Regui - Sistema completo de irrigação inteligente"
+                class="gallery-main-image">
+        </div>
+    </div>
+
+    <!-- Galeria PlugAlerta -->
+    <div id="gallery-plugalerta" class="gallery-modal">
+        <div class="gallery-content">
+            <div class="gallery-close">&times;</div>
+            <div class="gallery-nav gallery-prev">&lt;</div>
+            <div class="gallery-nav gallery-next">&gt;</div>
+            <img src="images/plugalerta_landing/plug1.png" alt="PlugAlerta - Monitor Inteligente de Energia"
+                class="gallery-main-image">
+        </div>
+    </div>
+
+    <!-- Galeria Snuggle -->
+    <div id="gallery-snuggle" class="gallery-modal">
+        <div class="gallery-content">
+            <div class="gallery-close">&times;</div>
+            <div class="gallery-nav gallery-prev">&lt;</div>
+            <div class="gallery-nav gallery-next">&gt;</div>
+            <img src="images/snuggle-app/sunggle1.jpg" alt="Snuggle App - Interface Principal"
+                class="gallery-main-image">
+        </div>
+    </div>
+
+    <script>
+
+
+        // Toggle do menu mobile
+        const headerEl = document.querySelector('.header');
+        const toggleBtn = document.querySelector('.nav-toggle');
+        if (toggleBtn) {
+            toggleBtn.addEventListener('click', () => {
+                const isOpen = headerEl.classList.toggle('open');
+                toggleBtn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+            });
+        }
+
+        // Fechar menu ao clicar em link (mobile)
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+                if (headerEl.classList.contains('open')) {
+                    headerEl.classList.remove('open');
+                    toggleBtn && toggleBtn.setAttribute('aria-expanded', 'false');
+                }
+            });
+        });
+
+        // Smooth scroll aprimorado
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Tratamento de erro para imagens
+        document.querySelectorAll('.project-image').forEach(img => {
+            img.addEventListener('error', function () {
+                this.style.background = 'var(--secondary-bg)';
+                this.style.display = 'flex';
+                this.style.alignItems = 'center';
+                this.style.justifyContent = 'center';
+                this.style.color = 'var(--text-muted)';
+                this.style.fontSize = '0.9rem';
+                this.innerHTML = '<div style="text-align: center;"><i class="fas fa-image" style="font-size: 2rem; margin-bottom: 1rem; display: block;"></i>Imagem não encontrada</div>';
+            });
+        });
+
+        // Função para abrir galeria com fallbacks
+        function openGallery(galleryId) {
+            return openGalleryAtImage(galleryId, 0);
+        }
+
+        // Função para abrir galeria em uma imagem específica
+        function openGalleryAtImage(galleryId, imageIndex) {
+            const modal = document.getElementById(`gallery-${galleryId}`);
+            if (modal) {
+                // Inicializar índice da galeria
+                modal.dataset.currentIndex = imageIndex.toString();
+
+                // Atualizar imagem principal para a imagem clicada
+                const mainImg = modal.querySelector('.gallery-main-image');
+                const images = galleryImages[galleryId];
+                if (images && images[imageIndex]) {
+                    mainImg.src = images[imageIndex];
+                    mainImg.alt = `Imagem ${imageIndex + 1} de ${images.length}`;
+                }
+
+                // Adicionar entrada no histórico do browser
+                history.pushState({ gallery: galleryId, index: imageIndex }, '', window.location.href);
+
+                // Forçar exibição do modal
+                modal.style.display = 'flex';
+                modal.style.visibility = 'visible';
+                modal.style.opacity = '1';
+                modal.classList.add('active');
+
+                // Bloquear scroll do body
+                document.body.style.overflow = 'hidden';
+                document.body.style.position = 'fixed';
+                document.body.style.width = '100%';
+                document.body.style.height = '100%';
+
+                return true;
+            }
+            return false;
+        }
+
+        // Função para fechar galeria
+        function closeGallery(modal) {
+            if (modal) {
+                modal.classList.remove('active');
+                modal.style.display = 'none';
+                modal.style.visibility = 'hidden';
+                modal.style.opacity = '0';
+
+                // Restaurar scroll do body
+                document.body.style.overflow = 'auto';
+                document.body.style.position = 'static';
+                document.body.style.width = 'auto';
+                document.body.style.height = 'auto';
+
+                // Voltar no histórico do browser
+                history.back();
+            }
+        }
+
+        // Arrays de imagens para cada galeria
+        const galleryImages = {
+            'snuggle': [
+                'images/snuggle-app/sunggle1.jpg',
+                'images/snuggle-app/sunggle2.jpeg',
+                'images/snuggle-app/sunggle3.jpeg',
+                'images/snuggle-app/sunggle4.jpeg',
+                'images/snuggle-app/sunggle5.jpeg',
+                'images/snuggle-app/sunggle6.jpeg',
+                'images/snuggle-app/sunggle7.jpeg',
+                'images/snuggle-app/sunggle8.jpeg'
+            ],
+            'leira': [
+                'images/projeto-leira-uerj/leira-1-20240328_141041.jpg',
+                'images/projeto-leira-uerj/leira-2-IMG-20220423-WA0014.jpg',
+                'images/projeto-leira-uerj/leira-3-20240426_142716.jpg',
+                'images/projeto-leira-uerj/leira-4-20240316_122711.jpg',
+                'images/projeto-leira-uerj/leira-5-20220327_142119.jpg'
+            ],
+            'cortina': [
+                'images/desenvolvimento-cortina-automatizada/veled1.png',
+                'images/desenvolvimento-cortina-automatizada/valed2.png',
+                'images/desenvolvimento-cortina-automatizada/veled%203.png',
+                'images/desenvolvimento-cortina-automatizada/veled4.png',
+                'images/desenvolvimento-cortina-automatizada/veled5.jpg',
+                'images/desenvolvimento-cortina-automatizada/veled6.png'
+            ],
+            'vaso': [
+                'images/vaso-automatizado/regui3.png',
+                'images/vaso-automatizado/regui1.png',
+                'images/vaso-automatizado/regui2.png',
+                'images/vaso-automatizado/regui4.png',
+                'images/vaso-automatizado/regui5.png',
+                'images/vaso-automatizado/regui7.png',
+                'images/vaso-automatizado/regui8.png',
+                'images/vaso-automatizado/regui9.png'
+            ],
+            'plugalerta': [
+                'images/plugalerta_landing/plug1.png',
+                'images/plugalerta_landing/plug2.png',
+                'images/plugalerta_landing/plug3.png',
+                'images/plugalerta_landing/plug4.png'
+            ]
+        };
+
+        // Sistema de Galeria Padrão
+        function initGallery() {
+            // Abrir galeria ao clicar em qualquer imagem de qualquer grid
+            document.querySelectorAll('.multi-image-grid').forEach(grid => {
+                const galleryId = grid.getAttribute('data-gallery');
+                const images = grid.querySelectorAll('img');
+
+                if (images.length > 0 && galleryId) {
+                    images.forEach((img, index) => {
+                        // Debug visual temporário
+                        img.style.cursor = 'pointer';
+
+                        // Variáveis para controle de toque
+                        let touchStartTime = 0;
+                        let touchStartY = 0;
+                        let touchMoved = false;
+
+                        // Event listener para clique (desktop)
+                        img.addEventListener('click', function (e) {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            openGalleryAtImage(galleryId, index);
+                        }, { passive: false, capture: true });
+
+                        // Event listener para touch start (mobile) - reduzir sensibilidade
+                        img.addEventListener('touchstart', function (e) {
+                            touchStartTime = Date.now();
+                            touchStartY = e.touches[0].clientY;
+                            touchMoved = false;
+                        }, { passive: true });
+
+                        // Event listener para touch move (mobile) - detectar scroll
+                        img.addEventListener('touchmove', function (e) {
+                            const touchY = e.touches[0].clientY;
+                            const deltaY = Math.abs(touchY - touchStartY);
+                            if (deltaY > 10) {
+                                touchMoved = true;
+                            }
+                        }, { passive: true });
+
+                        // Event listener para touch end (mobile) - só abre se não foi scroll
+                        img.addEventListener('touchend', function (e) {
+                            const touchDuration = Date.now() - touchStartTime;
+                            const isQuickTap = touchDuration < 500 && !touchMoved;
+
+                            if (isQuickTap) {
+                                e.preventDefault();
+                                e.stopPropagation();
+                                openGalleryAtImage(galleryId, index);
+                            }
+                        }, { passive: false, capture: true });
+                    });
+                }
+            });
+
+            // Fechar galeria
+            document.querySelectorAll('.gallery-close').forEach(closeBtn => {
+                closeBtn.addEventListener('click', function () {
+                    const modal = this.closest('.gallery-modal');
+                    closeGallery(modal);
+                });
+            });
+
+            // Fechar galeria clicando fora
+            document.querySelectorAll('.gallery-modal').forEach(modal => {
+                modal.addEventListener('click', function (e) {
+                    if (e.target === this) {
+                        closeGallery(this);
+                    }
+                });
+            });
+
+            // Navegação por setas
+            document.querySelectorAll('.gallery-nav').forEach(nav => {
+                nav.addEventListener('click', function () {
+                    const modal = this.closest('.gallery-modal');
+                    const galleryId = modal.id.replace('gallery-', '');
+                    const mainImg = modal.querySelector('.gallery-main-image');
+                    const images = galleryImages[galleryId];
+
+                    if (images) {
+                        // Usar data attribute para rastrear índice atual
+                        let currentIndex = parseInt(modal.dataset.currentIndex) || 0;
+
+                        let newIndex;
+                        if (this.classList.contains('gallery-prev')) {
+                            newIndex = currentIndex > 0 ? currentIndex - 1 : images.length - 1;
+                        } else {
+                            newIndex = currentIndex < images.length - 1 ? currentIndex + 1 : 0;
+                        }
+
+                        // Atualizar imagem principal
+                        mainImg.src = images[newIndex];
+                        mainImg.alt = `Imagem ${newIndex + 1} de ${images.length}`;
+
+                        // Salvar índice atual no modal
+                        modal.dataset.currentIndex = newIndex;
+                    }
+                });
+            });
+
+            // Fechar com ESC
+            document.addEventListener('keydown', function (e) {
+                if (e.key === 'Escape') {
+                    const activeModal = document.querySelector('.gallery-modal.active');
+                    if (activeModal) {
+                        closeGallery(activeModal);
+                    }
+                }
+            });
+        }
+
+        // Inicializar galeria quando DOM estiver pronto
+        function initializeGallery() {
+            initGallery();
+        }
+
+        // Inicialização única e confiável
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initializeGallery);
+        } else {
+            initializeGallery();
+        }
+
+        // Gerenciar botão voltar do browser
+        window.addEventListener('popstate', function (event) {
+            // Se há uma galeria aberta, fechá-la
+            const activeModal = document.querySelector('.gallery-modal.active');
+            if (activeModal) {
+                closeGallery(activeModal);
+            }
+        });
+
+        // Preload de imagens para melhor performance
+        function preloadImages() {
+            const imageUrls = [
+                'images/snuggle-app/sunggle1.jpg',
+                'images/snuggle-app/sunggle2.jpeg',
+                'images/snuggle-app/sunggle3.jpeg',
+                'images/snuggle-app/sunggle4.jpeg',
+                'images/snuggle-app/sunggle5.jpeg',
+                'images/snuggle-app/sunggle6.jpeg',
+                'images/snuggle-app/sunggle7.jpeg',
+                'images/snuggle-app/sunggle8.jpeg',
+                'images/projeto-leira-uerj/leira-1-20240328_141041.jpg',
+                'images/projeto-leira-uerj/leira-2-IMG-20220423-WA0014.jpg',
+                'images/projeto-leira-uerj/leira-3-20240426_142716.jpg',
+                'images/projeto-leira-uerj/leira-4-20240316_122711.jpg',
+                'images/projeto-leira-uerj/leira-5-20220327_142119.jpg',
+                'images/desenvolvimento-cortina-automatizada/veled1.png',
+                'images/desenvolvimento-cortina-automatizada/valed2.png',
+                'images/desenvolvimento-cortina-automatizada/veled%203.png',
+                'images/desenvolvimento-cortina-automatizada/veled4.png',
+                'images/desenvolvimento-cortina-automatizada/veled5.jpg',
+                'images/desenvolvimento-cortina-automatizada/veled6.png',
+                'images/vaso-automatizado/regui3.png',
+                'images/vaso-automatizado/regui1.png',
+                'images/vaso-automatizado/regui2.png',
+                'images/vaso-automatizado/regui4.png',
+                'images/vaso-automatizado/regui5.png',
+                'images/vaso-automatizado/regui7.png',
+                'images/vaso-automatizado/regui8.png',
+                'images/vaso-automatizado/regui9.png',
+                'images/plugalerta_landing/plug1.png',
+                'images/plugalerta_landing/plug2.png',
+                'images/plugalerta_landing/plug3.png',
+                'images/plugalerta_landing/plug4.png'
+            ];
+
+            imageUrls.forEach(url => {
+                const img = new Image();
+                img.src = url;
+            });
+        }
+
+        // Otimização para rotação de tela
+        let isRotating = false;
+        let rotationTimeout;
+
+        window.addEventListener('orientationchange', function () {
+            isRotating = true;
+            clearTimeout(rotationTimeout);
+
+            // Adicionar classe para manter elementos visíveis durante rotação
+            document.body.classList.add('rotating');
+
+            rotationTimeout = setTimeout(() => {
+                isRotating = false;
+                document.body.classList.remove('rotating');
+            }, 500);
+        });
+
+        // Preload das imagens
+        preloadImages();
+
+        // Animação de loading inicial
+        window.addEventListener('load', () => {
+            document.body.style.opacity = '1';
+        });
+    </script>
+</body>
+
+</html>
